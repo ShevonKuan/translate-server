@@ -6,7 +6,7 @@ install_deepl(){
         exit 1
     fi
     echo -e "DeepL latest version: ${last_version}, Start install..."
-    wget -q -N --no-check-certificate -O /usr/bin/deepl https://github.com/OwO-Network/DeepLX/releases/download/${last_version}/DeepLServer-linux-amd64
+    wget -q -N --no-check-certificate -O /usr/bin/deepl https://github.com/ShevonKuan/deepl-server/releases/download/${last_version}/DeepLServer-linux-amd64
 
 
     chmod +x /usr/bin/deepl
