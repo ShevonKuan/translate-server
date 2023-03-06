@@ -9,7 +9,7 @@ install_deepl(){
     wget -q -N --no-check-certificate -O /usr/bin/deepl https://github.com/OwO-Network/DeepLX/releases/download/${last_version}/DeepLServer-linux-amd64
 
 
-    chmod +x /usr/bin/deeplx
+    chmod +x /usr/bin/deepl
     wget -q -N --no-check-certificate -O /etc/systemd/system/deepl.service https://raw.githubusercontent.com/ShevonKuan/deepl-server/main/deepl.service
     systemctl daemon-reload
     systemctl enable deepl
