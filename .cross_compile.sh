@@ -1,17 +1,7 @@
 
-###
- # @Author: Vincent Young
- # @Date: 2022-10-20 02:19:06
- # @LastEditors: Vincent Young
- # @LastEditTime: 2023-02-18 20:45:52
- # @FilePath: /DeepLX/.cross_compile.sh
- # @Telegram: https://t.me/missuo
- # 
- # Copyright © 2022 by Vincent, All Rights Reserved. 
-### 
 set -e
 
-DIST_PREFIX="deeplx"
+DIST_PREFIX="DeepLServer"
 DEBUG_MODE=${2}
 TARGET_DIR="dist"
 PLATFORMS="darwin/amd64 darwin/arm64 linux/386 linux/amd64 linux/arm64 linux/mips openbsd/amd64 openbsd/arm64 freebsd/amd64 freebsd/arm64 windows/386 windows/amd64"
@@ -22,9 +12,9 @@ mkdir ${TARGET_DIR}
 for pl in ${PLATFORMS}; do
     export GOOS=$(echo ${pl} | cut -d'/' -f1)
     export GOARCH=$(echo ${pl} | cut -d'/' -f2)
-    export TARGET=${TARGET_DIR}/${DIST_PREFIX}_${GOOS}_${GOARCH}
+    export TARGET=${TARGET_DIR}/${DIST_PREFIX}-${GOOS}-${GOARCH}
     if [ "${GOOS}" == "windows" ]; then
-        export TARGET=${TARGET_DIR}/${DIST_PREFIX}_${GOOS}_${GOARCH}.exe
+        export TARGET=${TARGET_DIR}/${DIST_PREFIX}-${GOOS}-${GOARCH}.exe
     fi
 
     echo "build => ${TARGET}"
