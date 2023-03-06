@@ -6,11 +6,11 @@ install_deepl(){
         exit 1
     fi
     echo -e "DeepL latest version: ${last_version}, Start install..."
-    wget -q -N --no-check-certificate -O /usr/bin/deepl https://github.com/ShevonKuan/deepl-server/releases/download/${last_version}/DeepLServer-linux-amd64
+    wget -N --no-check-certificate -O /usr/bin/deepl https://github.com/ShevonKuan/deepl-server/releases/download/${last_version}/DeepLServer-linux-amd64
 
 
     chmod +x /usr/bin/deepl
-    wget -q -N --no-check-certificate -O /etc/systemd/system/deepl.service https://raw.githubusercontent.com/ShevonKuan/deepl-server/main/deepl.service
+    wget -N --no-check-certificate -O /etc/systemd/system/deepl.service https://raw.githubusercontent.com/ShevonKuan/deepl-server/main/deepl.service
     systemctl daemon-reload
     systemctl enable deepl
     systemctl start deepl
