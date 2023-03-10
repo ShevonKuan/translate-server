@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,6 +23,7 @@ func main() {
 	// set release mode
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
+	r.Use(cors.Default())
 	r.Use(func(context *gin.Context) {
 		context.Set("id", id)
 	})
