@@ -1,9 +1,10 @@
 package main
 
 import (
-	"deepl-server/controller"
 	"flag"
 	"fmt"
+
+	"github.com/ShevonKuan/translate-server/controller"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

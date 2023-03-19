@@ -1,4 +1,4 @@
-module deepl-server
+module github.com/ShevonKuan/translate-server
 
 go 1.20
 
