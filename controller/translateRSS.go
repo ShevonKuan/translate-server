@@ -52,8 +52,19 @@ func translate(i string, engine string) string {
 
 // 获取xml内容并解析为结构体
 func getRss(url string) (*etree.Document, error) {
-	resp, err := http.Get(url)
+	method := "GET"
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, nil)
+
 	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36")
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 	defer resp.Body.Close()
