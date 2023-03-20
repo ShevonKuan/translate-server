@@ -2,11 +2,11 @@
     "routes": [
         {
             "src": "/translate",
-            "dest": "/vercel/api.go"
+            "dest": "/api/api.go"
         },
         {
             "src": "/rss",
-            "dest": "/vercel/rss.go"
+            "dest": "/api/rss.go"
         }
     ]
 }
