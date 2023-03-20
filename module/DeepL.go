@@ -3,92 +3,24 @@ package module
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"log"
-	"math/rand"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/abadojack/whatlanggo"
 	"github.com/fatih/color"
-	"github.com/gin-gonic/gin"
 	"github.com/tidwall/gjson"
 )
 
-type Lang struct {
-	SourceLangUserSelected string `json:"source_lang_user_selected"`
-	TargetLang             string `json:"target_lang"`
-}
+func DeepLTranslate(i *InputObj) (*OutputObj, int, error) {
 
-type CommonJobParams struct {
-	WasSpoken    bool   `json:"wasSpoken"`
-	TranscribeAS string `json:"transcribe_as"`
-	// RegionalVariant string `json:"regionalVariant"`
-}
-
-type Params struct {
-	Texts           []Text          `json:"texts"`
-	Splitting       string          `json:"splitting"`
-	Lang            Lang            `json:"lang"`
-	Timestamp       int64           `json:"timestamp"`
-	CommonJobParams CommonJobParams `json:"commonJobParams"`
-}
-
-type Text struct {
-	Text                string `json:"text"`
-	RequestAlternatives int    `json:"requestAlternatives"`
-}
-
-type PostData struct {
-	Jsonrpc string `json:"jsonrpc"`
-	Method  string `json:"method"`
-	ID      int64  `json:"id"`
-	Params  Params `json:"params"`
-}
-
-func initData(sourceLang string, targetLang string) *PostData {
-	return &PostData{
-		Jsonrpc: "2.0",
-		Method:  "LMT_handle_texts",
-		Params: Params{
-			Splitting: "newlines",
-			Lang: Lang{
-				SourceLangUserSelected: sourceLang,
-				TargetLang:             targetLang,
-			},
-			CommonJobParams: CommonJobParams{
-				WasSpoken:    false,
-				TranscribeAS: "",
-				// RegionalVariant: "en-US",
-			},
-		},
-	}
-}
-
-func getICount(translateText string) int64 {
-	return int64(strings.Count(translateText, "i"))
-}
-
-func GetRandomNumber() int64 {
-	rand.Seed(time.Now().Unix())
-	num := rand.Int63n(99999) + 8300000
-	return num * 1000
-}
-
-func getTimeStamp(iCount int64) int64 {
-	ts := time.Now().UnixMilli()
-	if iCount != 0 {
-		iCount = iCount + 1
-		return ts - ts%iCount + iCount
-	} else {
-		return ts
-	}
-}
-
-func DeepLTranslate(i *InputObj) {
 	// create a random id
 	id := GetRandomNumber()
+	sourceLang := i.SourceLang
+	targetLang := i.TargetLang
+	translateText := i.SourceText
 
 	// print lang
 	color.Red("%s -> %s", sourceLang, targetLang)
@@ -104,15 +36,12 @@ func DeepLTranslate(i *InputObj) {
 		targetLang = "EN"
 	}
 	if translateText == "" {
-		c.JSON(http.StatusNotFound, gin.H{
-			"code":    http.StatusNotFound,
-			"message": "No Translate Text Found",
-		})
+		return nil, 0, errors.New("empty text")
 	} else {
 		url := "https://www2.deepl.com/jsonrpc"
 		id = id + 1
-		postData := initData(sourceLang, targetLang)
-		text := Text{
+		postData := deeplInitData(sourceLang, targetLang)
+		text := deeplText{
 			Text:                translateText,
 			RequestAlternatives: 3,
 		}
@@ -137,7 +66,7 @@ func DeepLTranslate(i *InputObj) {
 		request, err := http.NewRequest("POST", url, reader)
 		if err != nil {
 			log.Println(err)
-			return
+			return nil, 0, err
 		}
 
 		// Set Headers
@@ -157,7 +86,7 @@ func DeepLTranslate(i *InputObj) {
 		resp, err := client.Do(request)
 		if err != nil {
 			log.Println(err)
-			return
+			return nil, 0, err
 		}
 		defer resp.Body.Close()
 
@@ -169,30 +98,23 @@ func DeepLTranslate(i *InputObj) {
 		color.Cyan("Translate: " + res.Get("result.texts.0.text").String())
 		if res.Get("error.code").String() == "-32600" {
 			log.Println(res.Get("error").String())
-			c.JSON(http.StatusNotAcceptable, gin.H{
-				"code":    http.StatusNotAcceptable,
-				"message": "Invalid targetLang",
-			})
-			return
+			return nil, resp.StatusCode, errors.New("invalid targetLang")
 		}
 
 		if resp.StatusCode == http.StatusTooManyRequests {
-			c.JSON(http.StatusTooManyRequests, gin.H{
-				"code":    http.StatusTooManyRequests,
-				"message": "Too Many Requests",
-			})
-		} else {
-			var alternatives []string
-			res.Get("result.texts.0.alternatives").ForEach(func(key, value gjson.Result) bool {
-				alternatives = append(alternatives, value.Get("text").String())
-				return true
-			})
-			c.JSON(http.StatusOK, gin.H{
-				"code":         http.StatusOK,
-				"id":           id,
-				"data":         res.Get("result.texts.0.text").String(),
-				"alternatives": alternatives,
-			})
+			log.Println("Too many requests")
+			return nil, resp.StatusCode, errors.New("too many requests")
 		}
+		var alternatives []string
+		res.Get("result.texts.0.alternatives").ForEach(func(key, value gjson.Result) bool {
+			alternatives = append(alternatives, value.Get("text").String())
+			return true
+		})
+
+		return &OutputObj{
+			TransText:    res.Get("result.texts.0.text").String(),
+			Alternatives: alternatives,
+		}, http.StatusOK, nil
+
 	}
 }
