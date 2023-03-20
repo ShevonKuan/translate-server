@@ -1,0 +1,12 @@
+{
+    "routes": [
+        {
+            "src": "/api",
+            "dest": "/vercel/api.go"
+        },
+        {
+            "src": "/rss",
+            "dest": "/vercel/rss.go"
+        }
+    ]
+}
