@@ -1,11 +1,11 @@
 {
     "routes": [
         {
-            "src": "/translate",
+            "src": "/api/translate",
             "dest": "/api/api.go"
         },
         {
-            "src": "/rss",
+            "src": "/api/rss",
             "dest": "/api/rss.go"
         }
     ]
