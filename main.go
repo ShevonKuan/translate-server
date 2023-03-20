@@ -11,24 +11,24 @@ import (
 )
 
 func main() {
-	port := flag.String("port", "1188", "DeepL server port. Default: 1188")
-	ip := flag.String("ip", "0.0.0.0", "DeepL server IP. Default: 0.0.0.0")
+	port := flag.String("port", "1188", "Translate server port. Default: 1188")
+	ip := flag.String("ip", "0.0.0.0", "Translate server IP. Default: 0.0.0.0")
 	flag.Parse()
 	// display information
-	fmt.Println("DeepL Server has been successfully launched! Listening on " + *ip + ":" + *port)
-	fmt.Println("😀 Made by Shevon. Designed by sjlleo and missuo.")
-
-	// create a random id
-	id := controller.GetRandomNumber()
+	fmt.Println("Translate Server has been successfully launched! Listening on " + *ip + ":" + *port)
+	fmt.Println("😀 Made by Shevon")
 
 	// set release mode
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 	r.Use(cors.Default())
-	r.Use(func(context *gin.Context) {
-		context.Set("id", id)
-	})
+
 	r.GET("/", controller.StatusCode200)
+	// A route that will be called when a GET request is made to the `/rss` endpoint.
+	// Query: engine=deepl, url=xxx
+	r.GET("/rss", controller.TranslateRSS)
+	// A route that will be called when a POST request is made to the `/translate` endpoint.
+	// Query: engine=deepl
 	r.POST("/translate", controller.TranslateAPI)
 	r.Run(*ip + ":" + *port) // listen and serve on 0.0.0.0:1188
 }
