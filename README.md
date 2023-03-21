@@ -19,8 +19,11 @@ An integrated translation api server built on `Golang`.
   <a href="https://github.com/ShevonKuan/translate-server/discussions">
     <img src="https://img.shields.io/github/discussions/ShevonKuan/translate-server?color=%23ED8936" alt="discussions" />
   </a>
-  <a href="https://github.com/Xhofe/alist/releases">
+  <a href="https://github.com/ShevonKuan/translate-server/releases">
     <img src="https://img.shields.io/github/downloads/ShevonKuan/translate-server/total?color=%239F7AEA&logo=github" alt="Downloads" />
+  </a>
+    <a href="https://github.com/ShevonKuan/translate-server/releases">
+    <img src="https://img.shields.io/github/v/release/shevonkuan/translate-server?include_prereleases&label=pre-release" alt="Downloads" />
   </a>
   <!-- <a href="https://hub.docker.com/r/xhofe/alist">
     <img src="https://img.shields.io/docker/pulls/xhofe/alist?color=%2348BB78&logo=docker&label=pulls" alt="Downloads" />
