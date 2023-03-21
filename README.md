@@ -1,6 +1,5 @@
 # Translate-Server
-一个基于`Golang`构建的集成翻译api服务端。
-An integrated translation api server built on `Golang`.
+![translate-server](https://socialify.git.ci/ShevonKuan/translate-server/image?description=1&descriptionEditable=%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8EGolang%E6%9E%84%E5%BB%BA%E7%9A%84%E9%9B%86%E6%88%90%E7%BF%BB%E8%AF%91api%E6%9C%8D%E5%8A%A1%E7%AB%AF%E3%80%82%20An%20integrated%20translation%20api%20server%20built%20on%20Golang.&font=Jost&forks=1&issues=1&language=1&name=1&owner=1&pattern=Solid&pulls=1&stargazers=1&theme=Light)
 <div>
   <a href="https://goreportcard.com/report/github.com/shevonkuan/translate-server">
     <img src="https://goreportcard.com/badge/github.com/ShevonKuan/translate-server" alt="latest version" />
