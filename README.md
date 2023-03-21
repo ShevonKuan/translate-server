@@ -69,12 +69,14 @@ An integrated translation api server built on `Golang`.
 
 ```
 ### Translate XML
-always used to translate RSS feed.
 
-origin rss feed url: `http://export.arxiv.org/rss/cs.DC`
-translated rss feed url: `https://translate-server-five.vercel.app/api/rss?url=http://export.arxiv.org/rss/cs.DC`
+Always used to translate RSS feed:
 
-the default engine is google. if you want to specify the engine, you should run your own instance of the server instead of using the vercel one, like this:
+1. Add prefix `https://translate-server-five.vercel.app/api/rss?url=` to the original rss feed url. e.g. 
+   `http://export.arxiv.org/rss/cs.DC` 
+   -> 
+   `https://translate-server-five.vercel.app/api/rss?url=http://export.arxiv.org/rss/cs.DC`
+2. Add `&engine=deepl` or `&engine=google` to the end of the url. The default engine is google. if you want to specify the engine, you should run your own instance of the server instead of using the vercel one, like this:
 `http://127.0.0.1:1188/rss?url=http://export.arxiv.org/rss/cs.DC&engine=deepl`
 
 
