@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"sync"
 
 	"github.com/ShevonKuan/translate-server/module"
 	"github.com/abadojack/whatlanggo"
@@ -91,13 +92,22 @@ func RSStranslate(url string, engine string) (*etree.Document, error) {
 	description := rss.FindElement("//channel/description")
 	description.SetText(translate(description.Text(), engine) + description.Text())
 	// 翻译 item
-	for _, item := range rss.FindElements("//item") {
-		title := item.FindElement("title")
-		title.SetText(translate(title.Text(), engine) + title.Text())
-		description := item.FindElement("description")
-		fmt.Println(description.Text())
-		description.SetText(translate(description.Text(), engine) + description.Text())
+	var wg sync.WaitGroup
+	items := rss.FindElements("//item")
+
+	for _, item := range items {
+		wg.Add(1)
+		// 并发翻译
+		go func(item *etree.Element) {
+			defer wg.Done()
+			title := item.FindElement("title")
+			title.SetText(translate(title.Text(), engine) + title.Text())
+			description := item.FindElement("description")
+			fmt.Println(description.Text())
+			description.SetText(translate(description.Text(), engine) + description.Text())
+		}(item)
 	}
+	wg.Wait()
 	return rss, nil
 }
 func TranslateRSS(c *gin.Context) {
