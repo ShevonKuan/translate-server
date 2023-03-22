@@ -2,6 +2,7 @@ package module
 
 import (
 	"math/rand"
+	"net/http"
 	"strings"
 	"time"
 
@@ -100,8 +101,21 @@ func getTimeStamp(iCount int64) int64 {
 }
 
 // query params processing
-func GetEngine(c *gin.Context) (string, error) {
-	translateEngine := c.Query("engine")
+
+func GetEngine(q interface{}) (string, error) {
+	// class classify
+	var translateEngine string
+	c, ok := q.(*gin.Context)
+	if ok {
+		translateEngine = c.Query("engine")
+	} else {
+		r, ok := q.(*http.Request)
+		if ok {
+			translateEngine = r.URL.Query().Get("engine")
+		} else {
+			return "google", nil
+		}
+	}
 
 	for e := range Engine {
 		if e == translateEngine {

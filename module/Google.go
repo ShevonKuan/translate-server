@@ -66,10 +66,6 @@ func GoogleTranslate(i *InputObj) (*OutputObj, int, error) {
 		})
 
 		color.Cyan("Translate: " + output)
-		if res.Get("error.code").String() == "-32600" {
-			log.Println(res.Get("error").String())
-			return nil, resp.StatusCode, errors.New("invalid targetLang")
-		}
 
 		if resp.StatusCode == http.StatusTooManyRequests {
 			log.Println("Too many requests")

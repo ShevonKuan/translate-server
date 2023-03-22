@@ -14,7 +14,11 @@ func Api(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	translateEngine := "deepl"
+
+	// get query parameter
+	param := r.URL.Query().Get("engine")
+	translateEngine, _ := module.GetEngine(param)
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
