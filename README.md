@@ -45,7 +45,7 @@
 #### Request
 - method: `POST`
 - url: `/translate` or `https://translate-server-five.vercel.app/api/translate`
-- params: engine: `google` or `deepl`(`engine` param is only avaliable in the local server instead of the vercel one)
+- params: engine: `google` or `deepl`
 - body application/json: 
 ```json
 {
