@@ -1,8 +1,22 @@
 on:
+  workflow_dispatch:
+  release:
+    types: [published]
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+    paths:
+      - "**/*.go"
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/*.yml"
   pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "**/*.go"
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/*.yml"
 
 name: Build Release
 jobs:
@@ -118,20 +132,28 @@ jobs:
         run: |
           mkdir -p build_assets
           go build -v -o build_assets/translate-server -trimpath -ldflags "-s -w -buildid=" ./
+
       - name: Build background Translate-Server on Windows 
         if: matrix.goos == 'windows'
         run: |
-          go build -v -o build_assets/translate-server.exe -trimpath -ldflags "-s -w -H windowsgui -buildid=" ./
+          go build -v -o build_assets/translate-server-background.exe -trimpath -ldflags "-s -w -H windowsgui -buildid=" ./
     
       - name: Build Mips softfloat Xray
         if: matrix.goarch == 'mips' || matrix.goarch == 'mipsle'
         run: |
           GOMIPS=softfloat go build -v -o build_assets/translate-server-softfloat -trimpath -ldflags "-s -w -buildid=" ./
+      
+      - name: Rename Windows Xray
+        if: matrix.goos == 'windows'
+        run: |
+          cd ./build_assets || exit 1
+          mv translate-server translate-server.exe
 
       - name: Copy README.md & LICENSE
         run: |
           cp ${GITHUB_WORKSPACE}/README.md ./build_assets/README.md
           cp ${GITHUB_WORKSPACE}/LICENSE ./build_assets/LICENSE
+
       - name: Create ZIP archive
         shell: bash
         run: |
@@ -159,6 +181,6 @@ jobs:
         if: github.event_name == 'release'
         with:
           repo_token: ${{ secrets.GT_Token }}
-          file: ./Xray-${{ env.ASSET_NAME }}.zip*
+          file: ./translate-server-${{ env.ASSET_NAME }}.zip*
           tag: ${{ github.ref }}
           file_glob: true
