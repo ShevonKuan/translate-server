@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/abadojack/whatlanggo v1.0.1
-	github.com/beevik/etree v1.1.0
+	github.com/beevik/etree v1.2.0
 	github.com/fatih/color v1.15.0
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
