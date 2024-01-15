@@ -16,7 +16,7 @@ func Api(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get query parameter
-	translateEngine, _ := module.GetEngine(r)
+	translateEngine, _ := module.GetEngine(reqj.Engine)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)

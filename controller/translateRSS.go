@@ -111,7 +111,7 @@ func RSStranslate(url string, engine string) (*etree.Document, error) {
 	return rss, nil
 }
 func TranslateRSS(c *gin.Context) {
-	translateEngine, err := module.GetEngine(c)
+	translateEngine, err := module.GetEngine(c.Query("engine"))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"code":    http.StatusNotFound,

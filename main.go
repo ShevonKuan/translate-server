@@ -29,6 +29,6 @@ func main() {
 	r.GET("/rss", controller.TranslateRSS)
 	// A route that will be called when a POST request is made to the `/translate` endpoint.
 	// Query: engine=deepl
-	r.POST("/translate", controller.TranslateAPI)
-	r.Run(*ip + ":" + *port) // listen and serve on 0.0.0.0:1188
+	r.Any("/translate", controller.TranslateAPI) // change to Any to support CORS
+	r.Run(*ip + ":" + *port)                     // listen and serve on 0.0.0.0:1188
 }
