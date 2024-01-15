@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/abadojack/whatlanggo"
+	"github.com/andybalholm/brotli"
 	"github.com/fatih/color"
 	"github.com/tidwall/gjson"
 )
@@ -77,9 +78,9 @@ func DeepLTranslate(i *InputObj) (*OutputObj, int, error) {
 		request.Header.Set("Accept-Language", "en-US,en;q=0.9")
 		request.Header.Set("Accept-Encoding", "gzip, deflate, br")
 		request.Header.Set("x-app-device", "iPhone13,2")
-		request.Header.Set("User-Agent", "DeepL-iOS/2.6.0 iOS 16.3.0 (iPhone13,2)")
-		request.Header.Set("x-app-build", "353933")
-		request.Header.Set("x-app-version", "2.6")
+		request.Header.Set("User-Agent", "DeepL-iOS/2.9.1 iOS 16.3.0 (iPhone13,2)")
+		request.Header.Set("x-app-build", "510265")
+		request.Header.Set("x-app-version", "2.9.1")
 		request.Header.Set("Connection", "keep-alive")
 
 		client := &http.Client{}
@@ -90,7 +91,15 @@ func DeepLTranslate(i *InputObj) (*OutputObj, int, error) {
 		}
 		defer resp.Body.Close()
 
-		body, _ := io.ReadAll(resp.Body)
+		var bodyReader io.Reader
+		switch resp.Header.Get("Content-Encoding") {
+		case "br":
+			bodyReader = brotli.NewReader(resp.Body)
+		default:
+			bodyReader = resp.Body
+		}
+
+		body, err := io.ReadAll(bodyReader)
 		res := gjson.ParseBytes(body)
 		// display response
 		// fmt.Println(res)
