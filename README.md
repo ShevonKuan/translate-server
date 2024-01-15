@@ -78,7 +78,7 @@
 You can use JSONP to request the api, just add `callback` param to the url, like this:
 
 -   method: `POST`
--   url: `/translate` or `https://translate-server-five.vercel.app/api/translate?callback=tr`
+-   url: `/translate?callback=tr` (In order to avoid abusing the public API, the vercel version of the API is not supported for jsonp requests.)
 -   params:
     -   engine: `google` or `deepl`
 -   body application/json:
