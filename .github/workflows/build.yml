@@ -171,7 +171,7 @@ jobs:
         run: |
           mv build_assets translate-server-${{ env.ASSET_NAME }}
       - name: Upload files to Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: translate-server-${{ env.ASSET_NAME }}
           path: |
