@@ -9,7 +9,7 @@ require (
 	github.com/fatih/color v1.16.0
 	github.com/gin-contrib/cors v1.7.1
 	github.com/gin-gonic/gin v1.9.1
-	github.com/tidwall/gjson v1.17.0
+	github.com/tidwall/gjson v1.18.0
 )
 
 require (
