@@ -1,11 +1,12 @@
 module github.com/ShevonKuan/translate-server
 
 go 1.20
+toolchain go1.24.1
 
 require (
 	github.com/abadojack/whatlanggo v1.0.1
 	github.com/andybalholm/brotli v1.1.0
-	github.com/beevik/etree v1.3.0
+	github.com/beevik/etree v1.5.0
 	github.com/fatih/color v1.16.0
 	github.com/gin-contrib/cors v1.7.1
 	github.com/gin-gonic/gin v1.9.1
