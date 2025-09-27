@@ -37,8 +37,9 @@
 
 ### Support Translate Engine
 
--   [x] [DeepL](https://www.deepl.com/translator)
+-   [x] [DeepL](https://www.deepl.com/translator) We noticed that our deepl translate module is not stable enough hence we are going to deprecate it in the future until upstream [DeepLX](https://github.com/OwO-Network/DeepLX) fixes the issues.
 -   [x] [Google](https://translate.google.com)
+-   [x] [LLM-GLM 智谱大模型](https://open.bigmodel.cn/)
 -   [ ] [tencent](https://fanyi.qq.com/)
 -   [ ] [baidu](https://fanyi.baidu.com/)
 -   [ ] [youdao](https://fanyi.youdao.com/)
@@ -114,8 +115,12 @@ Always used to translate RSS feed:
 
 ### Run with Docker
 
-// TODO
+## TODO
 
+- [ ] integrated much more LLM models
+  - [ ] 通义千问
+  - [ ] 硅基流动
+  - [ ] DeepSeek
 ## Author
 
 **Shevon Kwan** © [translate-server Contributors](https://github.com/ShevonKuan/translate-server/contributors)

@@ -7,10 +7,18 @@ import (
 )
 
 type InputObj struct {
-	SourceText string `json:"text"`
-	SourceLang string `json:"source_lang"`
-	TargetLang string `json:"target_lang"`
-	Engine     string `json:"engine"`
+	SourceText string `json:"text" form:"text" binding:"required"`
+	SourceLang string `json:"source_lang" form:"source_lang"`
+	TargetLang string `json:"target_lang" form:"target_lang"`
+	Engine     string `json:"engine" form:"engine"` // deepl, google, llm
+	// only available for LLM
+	API         string `json:"api" form:"api"`
+	ModelName   string `json:"model_name" form:"model_name"`
+	Prompt      string `json:"prompt" form:"prompt"`
+	Temperature string `json:"temperature" form:"temperature"`
+	Token       string `json:"token" form:"token"`
+	MaxTokens   string `json:"max_tokens" form:"max_tokens"`
+	Stream      string `json:"stream" form:"stream"` // true, false
 }
 
 type OutputObj struct {

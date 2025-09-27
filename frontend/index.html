@@ -1,0 +1,52 @@
+<!-- static/index.html -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <title>流式翻译</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        #result { margin-top: 1rem; padding: 1rem; border: 1px solid #ccc; min-height: 100px; }
+    </style>
+</head>
+<body>
+<h1>🌍 流式翻译器</h1>
+<p>示例: /translate/中文/英文/你好世界</p>
+<input type="text" id="url" placeholder="输入翻译请求 URL" value="/translate/中文/英文/你好，今天天气真好！" style="width: 500px;" />
+<button onclick="startTranslate()">翻译</button>
+<div id="result"></div>
+
+<script>
+    function startTranslate() {
+        const url = document.getElementById('url').value.trim();
+        if (!url) return;
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = ''; // 清空
+
+        // 使用 EventSource 建立 SSE 连接
+        const source = new EventSource(url);
+
+        source.onmessage = function(event) {
+            if (event.data === '[DONE]') {
+                source.close();
+                return;
+            }
+            // 累加显示翻译内容
+            resultDiv.innerText += event.data;
+        };
+
+        source.onerror = function(err) {
+            console.error("SSE 错误:", err);
+            resultDiv.innerText += "\n[错误：连接中断]";
+            source.close();
+        };
+
+        source.addEventListener("done", function(event) {
+            console.log("翻译完成");
+            source.close();
+        });
+    }
+</script>
+</body>
+</html>
